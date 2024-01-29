@@ -1,0 +1,109 @@
+Microsoft Windows [Version 10.0.19045.3930]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Dell>docker run -d --name redis-stack -p 6379:6379 -p 8001:8001 redis/redis-stack:latest
+Unable to find image 'redis/redis-stack:latest' locally
+latest: Pulling from redis/redis-stack
+a48641193673: Pull complete
+041fb8ee2575: Pull complete
+66a0ffecddc0: Pull complete
+2693ec592811: Pull complete
+ec6c9301ca3f: Pull complete
+75e5ce02e1bb: Pull complete
+d88b428e4a4a: Pull complete
+0c765ca6f4e5: Pull complete
+102d335dcf2d: Pull complete
+577c4787aecc: Pull complete
+4f4fb700ef54: Pull complete
+ce3fdd0f2642: Pull complete
+3936cc63c90d: Pull complete
+d2cc7d18f693: Pull complete
+5e27c787b342: Pull complete
+836a779ab79e: Pull complete
+Digest: sha256:e0ced795a4e2d6a9d12b5983101bdaef800964521d5020b1aa4d09ebed32900c
+Status: Downloaded newer image for redis/redis-stack:latest
+9131b0635533b972ff0066a150bb430fbeacbd5ca1c731241417ed1499c1209f
+
+C:\Users\Dell>docker ps
+CONTAINER ID   IMAGE                      COMMAND            CREATED       STATUS       PORTS                                            NAMES
+9131b0635533   redis/redis-stack:latest   "/entrypoint.sh"   2 hours ago   Up 2 hours   0.0.0.0:6379->6379/tcp, 0.0.0.0:8001->8001/tcp   redis-stack
+
+C:\Users\Dell>docker exec -it 9131b0635533 bash
+root@9131b0635533:/# redis-cli ping
+PONG
+root@9131b0635533:/# redis-cli
+127.0.0.1:6379> set name Ashish
+OK
+127.0.0.1:6379> get name
+"Ashish"
+127.0.0.1:6379> get name
+"Ashish Agam"
+127.0.0.1:6379> set user:1 Ashish
+OK
+127.0.0.1:6379> set user:2 Kuldeep
+OK
+127.0.0.1:6379> set user:3 Mahesh
+OK
+127.0.0.1:6379> set msg:1 Hi
+OK
+127.0.0.1:6379> set msg:2 Hello
+OK
+127.0.0.1:6379> set msg:3 Namaste
+OK
+127.0.0.1:6379> set msg:3 hi nx
+(nil)
+127.0.0.1:6379> mget user:1 user:1 msg:1 msg:3
+1) "Ashish"
+2) "Ashish"
+3) "Hi"
+4) "Namaste"
+127.0.0.1:6379> set count:1 0
+OK
+127.0.0.1:6379> incr count
+(integer) 1
+127.0.0.1:6379> incr count
+(integer) 2
+127.0.0.1:6379> incrby count 10
+(integer) 12
+127.0.0.1:6379> lpush messages Hi
+(integer) 1
+127.0.0.1:6379> lpush messages Hello
+(integer) 2
+127.0.0.1:6379> rpush messages Namaste
+(integer) 3
+127.0.0.1:6379> rpush messages How_are_you
+(integer) 4
+127.0.0.1:6379> lpop messages
+"Hello"
+127.0.0.1:6379> rpop messages
+"How_are_you"
+127.0.0.1:6379> llen messahes
+(integer) 0
+127.0.0.1:6379> llen messages
+(integer) 2
+127.0.0.1:6379> lmove messages mylist right left
+"Namaste"
+127.0.0.1:6379> lrange messages 0 1
+1) "Hi"
+127.0.0.1:6379> lrange messages 0 2
+1) "Hi"
+127.0.0.1:6379> rpush messages Namaste
+(integer) 2
+127.0.0.1:6379> ltrim messages Namaste 0 1
+(error) ERR wrong number of arguments for 'ltrim' command
+127.0.0.1:6379> ltrim messages 0 2
+OK
+127.0.0.1:6379> ltrim messages 0 1
+OK
+127.0.0.1:6379> ltrim messages 0 3
+OK
+127.0.0.1:6379> blpop mylist 10
+1) "mylist"
+2) "Namaste"
+127.0.0.1:6379> blpop mylist 10
+(nil)
+(10.07s)
+127.0.0.1:6379> blpop mylist 10
+(nil)
+(10.07s)
+127.0.0.1:6379>
