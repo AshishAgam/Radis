@@ -106,4 +106,6 @@ OK
 127.0.0.1:6379> blpop mylist 10
 (nil)
 (10.07s)
+127.0.0.1:6379> lpush messages Hello
+(integer) 3
 127.0.0.1:6379>
